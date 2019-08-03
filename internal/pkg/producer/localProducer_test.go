@@ -11,8 +11,8 @@ const exampleChannelSize = 10
 
 func TestLocalProducer_produce(t *testing.T) {
 
-	exampleURL,_ := url.Parse("http://monzo.com")
-	exampleMessage,_ := message.New(*exampleURL)
+	exampleURL, _ := url.Parse("http://monzo.com")
+	exampleMessage, _ := message.New(*exampleURL)
 
 	type fields struct {
 		messageQueue chan message.Message
@@ -27,13 +27,13 @@ func TestLocalProducer_produce(t *testing.T) {
 		wantErr bool
 	}{
 		0: {name: "ValidMessage",
-			fields: fields{messageQueue: make(chan message.Message, exampleChannelSize)},
-			args: args{msg: *exampleMessage},
+			fields:  fields{messageQueue: make(chan message.Message, exampleChannelSize)},
+			args:    args{msg: *exampleMessage},
 			wantErr: false},
 
 		1: {name: "EmptyMessage",
-			fields: fields{messageQueue: make(chan message.Message, exampleChannelSize)},
-			args: args{msg: message.Message{}},
+			fields:  fields{messageQueue: make(chan message.Message, exampleChannelSize)},
+			args:    args{msg: message.Message{}},
 			wantErr: true}}
 
 	for _, tt := range tests {
@@ -50,7 +50,7 @@ func TestLocalProducer_produce(t *testing.T) {
 
 func TestNewLocalProducer(t *testing.T) {
 
-	exampleLocalProducer,_ := New(make(chan message.Message, exampleChannelSize))
+	exampleLocalProducer, _ := New(make(chan message.Message, exampleChannelSize))
 
 	type args struct {
 		messageQueue chan message.Message
@@ -62,14 +62,14 @@ func TestNewLocalProducer(t *testing.T) {
 		wantErr      bool
 	}{
 		0: {name: "ValidMessageQueue",
-			args: args{messageQueue: exampleLocalProducer.messageQueue},
+			args:         args{messageQueue: exampleLocalProducer.messageQueue},
 			wantProducer: exampleLocalProducer,
-			wantErr: false},
+			wantErr:      false},
 
 		1: {name: "NilMessageQueue",
-			args: args{messageQueue: nil},
+			args:         args{messageQueue: nil},
 			wantProducer: nil,
-			wantErr: true}}
+			wantErr:      true}}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
