@@ -11,7 +11,7 @@ type LocalProducer struct {
 }
 
 // Constructs a new LocalProducer object with values being passed as arguments
-func NewLocalProducer(messageQueue chan message.Message) (producer *LocalProducer, err error) {
+func New(messageQueue chan message.Message) (producer *LocalProducer, err error) {
 
 	if messageQueue == nil {
 		err = errors.New("messageQueue should not be nil")

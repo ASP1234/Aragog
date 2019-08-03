@@ -47,13 +47,13 @@ func TestNewMessage(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotMsg, err := NewMessage(tt.args.url)
+			gotMsg, err := New(tt.args.url)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("NewMessage() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("New() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(gotMsg, tt.wantMsg) {
-				t.Errorf("NewMessage() gotMsg = %v, want %v", gotMsg, tt.wantMsg)
+				t.Errorf("New() gotMsg = %v, want %v", gotMsg, tt.wantMsg)
 			}
 		})
 	}

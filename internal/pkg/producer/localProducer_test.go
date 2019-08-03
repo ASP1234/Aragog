@@ -12,7 +12,7 @@ const exampleChannelSize = 10
 func TestLocalProducer_produce(t *testing.T) {
 
 	exampleURL,_ := url.Parse("http://monzo.com")
-	exampleMessage,_ := message.NewMessage(*exampleURL)
+	exampleMessage,_ := message.New(*exampleURL)
 
 	type fields struct {
 		messageQueue chan message.Message
@@ -50,7 +50,7 @@ func TestLocalProducer_produce(t *testing.T) {
 
 func TestNewLocalProducer(t *testing.T) {
 
-	exampleLocalProducer,_ := NewLocalProducer(make(chan message.Message, exampleChannelSize))
+	exampleLocalProducer,_ := New(make(chan message.Message, exampleChannelSize))
 
 	type args struct {
 		messageQueue chan message.Message
@@ -73,14 +73,14 @@ func TestNewLocalProducer(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotProducer, err := NewLocalProducer(tt.args.messageQueue)
+			gotProducer, err := New(tt.args.messageQueue)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("NewLocalProducer() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("New() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if (gotProducer != nil) && (tt.wantProducer != nil) {
 				if !reflect.DeepEqual(gotProducer.messageQueue, tt.wantProducer.messageQueue) {
-					t.Errorf("NewLocalProducer() gotProducer = %v, want %v", gotProducer, tt.wantProducer)
+					t.Errorf("New() gotProducer = %v, want %v", gotProducer, tt.wantProducer)
 				}
 			}
 		})

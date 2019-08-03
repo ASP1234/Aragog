@@ -11,7 +11,7 @@ type Message struct {
 }
 
 // Constructs a new Message object with values being passed as arguments
-func NewMessage(link url.URL) (msg *Message, err error) {
+func New(link url.URL) (msg *Message, err error) {
 
 	if link == (url.URL{}) {
 		err = errors.New("link should not be empty")
