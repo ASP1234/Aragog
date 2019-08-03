@@ -2,7 +2,7 @@ package producer
 
 import (
 	message "Aragog/internal/pkg/entity"
-	"errors"
+	customError "Aragog/pkg/error"
 )
 
 // Producer for publishing messages via channels
@@ -14,7 +14,7 @@ type LocalProducer struct {
 func New(messageQueue chan message.Message) (producer *LocalProducer, err error) {
 
 	if messageQueue == nil {
-		err = errors.New("messageQueue should not be nil")
+		err = customError.NewValidationError("messageQueue should not be nil")
 		return nil, err
 	}
 
@@ -28,7 +28,7 @@ func New(messageQueue chan message.Message) (producer *LocalProducer, err error)
 func (producer *LocalProducer) produce(msg message.Message) (err error) {
 
 	if msg == (message.Message{}) {
-		err = errors.New("msg should not be nil")
+		err = customError.NewValidationError("msg should not be nil")
 		return err
 	}
 

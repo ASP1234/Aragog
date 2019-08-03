@@ -1,7 +1,7 @@
 package message
 
 import (
-	"errors"
+	customError "Aragog/pkg/error"
 	"net/url"
 )
 
@@ -14,7 +14,7 @@ type Message struct {
 func New(link url.URL) (msg *Message, err error) {
 
 	if link == (url.URL{}) {
-		err = errors.New("link should not be empty")
+		err = customError.NewValidationError("link should not be empty")
 		return nil, err
 	}
 
