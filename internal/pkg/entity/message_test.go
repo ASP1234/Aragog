@@ -11,12 +11,12 @@ const exampleUrlString = "https://monzo.com/"
 func TestMessage_GetLink(t *testing.T) {
 
 	type fields struct {
-		link url.URL
+		link *url.URL
 	}
 	tests := []struct {
 		name   string
 		fields fields
-		want   url.URL
+		want   *url.URL
 	}{
 		0: {name: "ValidURL", fields: fields{link: exampleURL()}, want: exampleURL()}}
 
@@ -34,7 +34,7 @@ func TestMessage_GetLink(t *testing.T) {
 
 func TestNewMessage(t *testing.T) {
 	type args struct {
-		url url.URL
+		url *url.URL
 	}
 	tests := []struct {
 		name    string
@@ -43,7 +43,7 @@ func TestNewMessage(t *testing.T) {
 		wantErr bool
 	}{
 		0: {name: "ValidURL", args: args{url: exampleURL()}, wantMsg: &Message{link: exampleURL()}, wantErr: false},
-		1: {name: "EmptyURL", args: args{url: url.URL{}}, wantMsg: nil, wantErr: true}}
+		1: {name: "EmptyURL", args: args{url: nil}, wantMsg: nil, wantErr: true}}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -59,10 +59,10 @@ func TestNewMessage(t *testing.T) {
 	}
 }
 
-func exampleURL() (url url.URL) {
+func exampleURL() (link *url.URL) {
 
 	urlPtr, _ := url.Parse(exampleUrlString)
-	url = *urlPtr
+	link = urlPtr
 
-	return url
+	return link
 }

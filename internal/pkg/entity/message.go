@@ -7,14 +7,14 @@ import (
 
 // Message Entity for capturing data related to the address to be fetched
 type Message struct {
-	link url.URL
+	link *url.URL
 }
 
 // Constructs a new Message object with values being passed as arguments
-func NewMessage(link url.URL) (msg *Message, err error) {
+func NewMessage(link *url.URL) (msg *Message, err error) {
 
-	if link == (url.URL{}) {
-		err = customError.NewValidationError("link should not be empty")
+	if link == nil {
+		err = customError.NewValidationError("link should not be nil")
 		return nil, err
 	}
 
@@ -25,7 +25,7 @@ func NewMessage(link url.URL) (msg *Message, err error) {
 }
 
 // Returns the value of link
-func (msg *Message) GetLink() url.URL {
+func (msg *Message) GetLink() *url.URL {
 
 	return msg.link
 }

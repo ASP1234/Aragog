@@ -18,7 +18,7 @@ func NewHttpFetcher() (httpFetcher *HttpFetcher, err error) {
 
 // Fetches the seedUrl
 // Returns the slice of URLs present in the response body of seedUrl
-func (httpFetcher *HttpFetcher) Fetch(seedUrl url.URL) (links []url.URL, err error) {
+func (httpFetcher *HttpFetcher) Fetch(seedUrl url.URL) (links []*url.URL, err error) {
 
 	if seedUrl == (url.URL{}) {
 		err = customError.NewValidationError("seedUrl should not be empty")
@@ -37,7 +37,7 @@ func (httpFetcher *HttpFetcher) Fetch(seedUrl url.URL) (links []url.URL, err err
 	return parse(resp), nil
 }
 
-func parse(resp *http.Response) (links []url.URL) {
+func parse(resp *http.Response) (links []*url.URL) {
 
 	body := resp.Body
 	tokenizer := html.NewTokenizer(body)
@@ -52,7 +52,7 @@ func parse(resp *http.Response) (links []url.URL) {
 				link, err := getChildLink(token)
 
 				if err == nil && link != nil {
-					links = append(links, *link)
+					links = append(links, link)
 				}
 			}
 		}

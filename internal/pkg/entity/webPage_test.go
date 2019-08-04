@@ -11,8 +11,8 @@ const fetchedUrlString = "https://monzo.com/"
 
 func TestNewWebPage(t *testing.T) {
 	type args struct {
-		address         url.URL
-		links           []url.URL
+		address         *url.URL
+		links           []*url.URL
 		lastFetchedDate time.Time
 	}
 	tests := []struct {
@@ -26,7 +26,7 @@ func TestNewWebPage(t *testing.T) {
 			wantWebPage: sampleWebPage(),
 			wantErr:     false},
 		1: {name: "InvalidAddress",
-			args:        args{address: url.URL{}, links: nil, lastFetchedDate: sampleLastFetchedDate()},
+			args:        args{address: nil, links: nil, lastFetchedDate: sampleLastFetchedDate()},
 			wantWebPage: nil,
 			wantErr:     true},
 		2: {name: "InvalidLastFetchedDate",
@@ -50,8 +50,8 @@ func TestNewWebPage(t *testing.T) {
 
 func TestWebPage_GetLastFetchedDate(t *testing.T) {
 	type fields struct {
-		address         url.URL
-		links           []url.URL
+		address         *url.URL
+		links           []*url.URL
 		lastFetchedDate time.Time
 	}
 	tests := []struct {
@@ -79,14 +79,14 @@ func TestWebPage_GetLastFetchedDate(t *testing.T) {
 
 func TestWebPage_GetLinks(t *testing.T) {
 	type fields struct {
-		address         url.URL
-		links           []url.URL
+		address         *url.URL
+		links           []*url.URL
 		lastFetchedDate time.Time
 	}
 	tests := []struct {
 		name   string
 		fields fields
-		want   []url.URL
+		want   []*url.URL
 	}{
 		0: {name: "ValidFields",
 			fields: fields{address: fetchedURL(), links: nil, lastFetchedDate: sampleLastFetchedDate()},
@@ -108,14 +108,14 @@ func TestWebPage_GetLinks(t *testing.T) {
 
 func TestWebPage_GetUrl(t *testing.T) {
 	type fields struct {
-		address         url.URL
-		links           []url.URL
+		address         *url.URL
+		links           []*url.URL
 		lastFetchedDate time.Time
 	}
 	tests := []struct {
 		name   string
 		fields fields
-		want   url.URL
+		want   *url.URL
 	}{
 		0: {name: "ValidFields",
 			fields: fields{address: fetchedURL(), links: nil, lastFetchedDate: sampleLastFetchedDate()},
@@ -135,12 +135,12 @@ func TestWebPage_GetUrl(t *testing.T) {
 	}
 }
 
-func fetchedURL() (url url.URL) {
+func fetchedURL() (link *url.URL) {
 
 	urlPtr, _ := url.Parse(fetchedUrlString)
-	url = *urlPtr
+	link = urlPtr
 
-	return url
+	return link
 }
 
 func sampleLastFetchedDate() time.Time {

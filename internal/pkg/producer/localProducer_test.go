@@ -12,7 +12,7 @@ const exampleChannelSize = 10
 func TestLocalProducer_produce(t *testing.T) {
 
 	exampleURL, _ := url.Parse("http://monzo.com")
-	exampleMessage, _ := entity.NewMessage(*exampleURL)
+	exampleMessage, _ := entity.NewMessage(exampleURL)
 
 	type fields struct {
 		messageQueue chan entity.Message
