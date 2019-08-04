@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-const msg = "Sample Error Message"
+const dependencyErrorMsg = "Sample Error Message"
 
 func TestDependencyError_Error(t *testing.T) {
 	type fields struct {
@@ -16,7 +16,7 @@ func TestDependencyError_Error(t *testing.T) {
 		fields fields
 		want   string
 	}{
-		0: {name: "NonEmptyMsg", fields: fields{message: msg}, want: msg}}
+		0: {name: "NonEmptyMsg", fields: fields{message: dependencyErrorMsg}, want: dependencyErrorMsg}}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			err := &DependencyError{
@@ -38,7 +38,7 @@ func TestNewDependencyError(t *testing.T) {
 		args args
 		want *DependencyError
 	}{
-		0: {name: "NonEmptyMsg", args: args{message: msg}, want: NewDependencyError(msg)}}
+		0: {name: "NonEmptyMsg", args: args{message: dependencyErrorMsg}, want: NewDependencyError(dependencyErrorMsg)}}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

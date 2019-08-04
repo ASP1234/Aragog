@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+const validationErrorMsg = "Sample Error Message"
+
 func TestValidationError_Error(t *testing.T) {
 	type fields struct {
 		message string
@@ -12,9 +14,9 @@ func TestValidationError_Error(t *testing.T) {
 	tests := []struct {
 		name   string
 		fields fields
-		want string
+		want   string
 	}{
-		0: {name: "NonEmptyMsg", fields: fields{message: msg}, want: msg}}
+		0: {name: "NonEmptyMsg", fields: fields{message: validationErrorMsg}, want: validationErrorMsg}}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			err := &ValidationError{
@@ -36,7 +38,7 @@ func TestNewValidationError(t *testing.T) {
 		args args
 		want *ValidationError
 	}{
-		0: {name: "NonEmptyMsg", args: args{message: msg}, want: NewValidationError(msg)}}
+		0: {name: "NonEmptyMsg", args: args{message: validationErrorMsg}, want: NewValidationError(validationErrorMsg)}}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

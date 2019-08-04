@@ -12,13 +12,13 @@ const exampleChannelSize = 10
 func TestLocalProducer_produce(t *testing.T) {
 
 	exampleURL, _ := url.Parse("http://monzo.com")
-	exampleMessage, _ := message.New(*exampleURL)
+	exampleMessage, _ := entity.NewMessage(*exampleURL)
 
 	type fields struct {
-		messageQueue chan message.Message
+		messageQueue chan entity.Message
 	}
 	type args struct {
-		msg message.Message
+		msg entity.Message
 	}
 	tests := []struct {
 		name    string
@@ -27,13 +27,13 @@ func TestLocalProducer_produce(t *testing.T) {
 		wantErr bool
 	}{
 		0: {name: "ValidMessage",
-			fields:  fields{messageQueue: make(chan message.Message, exampleChannelSize)},
+			fields:  fields{messageQueue: make(chan entity.Message, exampleChannelSize)},
 			args:    args{msg: *exampleMessage},
 			wantErr: false},
 
 		1: {name: "EmptyMessage",
-			fields:  fields{messageQueue: make(chan message.Message, exampleChannelSize)},
-			args:    args{msg: message.Message{}},
+			fields:  fields{messageQueue: make(chan entity.Message, exampleChannelSize)},
+			args:    args{msg: entity.Message{}},
 			wantErr: true}}
 
 	for _, tt := range tests {
@@ -50,10 +50,10 @@ func TestLocalProducer_produce(t *testing.T) {
 
 func TestNewLocalProducer(t *testing.T) {
 
-	exampleLocalProducer, _ := New(make(chan message.Message, exampleChannelSize))
+	exampleLocalProducer, _ := New(make(chan entity.Message, exampleChannelSize))
 
 	type args struct {
-		messageQueue chan message.Message
+		messageQueue chan entity.Message
 	}
 	tests := []struct {
 		name         string
@@ -75,12 +75,12 @@ func TestNewLocalProducer(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			gotProducer, err := New(tt.args.messageQueue)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("New() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NewMessage() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if (gotProducer != nil) && (tt.wantProducer != nil) {
 				if !reflect.DeepEqual(gotProducer.messageQueue, tt.wantProducer.messageQueue) {
-					t.Errorf("New() gotProducer = %v, want %v", gotProducer, tt.wantProducer)
+					t.Errorf("NewMessage() gotProducer = %v, want %v", gotProducer, tt.wantProducer)
 				}
 			}
 		})

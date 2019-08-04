@@ -1,17 +1,17 @@
-package message
+package entity
 
 import (
 	customError "Aragog/pkg/error"
 	"net/url"
 )
 
-// Message Entity for capturing data related to the url to be fetched
+// Message Entity for capturing data related to the address to be fetched
 type Message struct {
 	link url.URL
 }
 
 // Constructs a new Message object with values being passed as arguments
-func New(link url.URL) (msg *Message, err error) {
+func NewMessage(link url.URL) (msg *Message, err error) {
 
 	if link == (url.URL{}) {
 		err = customError.NewValidationError("link should not be empty")
