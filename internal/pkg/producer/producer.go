@@ -6,5 +6,5 @@ import (
 
 // Interface exposed for producing message
 type Producer interface {
-	produce(msg message.Message)
+	Produce(msg message.Message)
 }

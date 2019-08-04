@@ -24,11 +24,29 @@ func TestHttpFetcher_Fetch(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			httpFetcher := &HttpFetcher{}
+			httpFetcher, _ := NewHttpFetcher()
 			_, err := httpFetcher.Fetch(tt.args.seedUrl)
 
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Fetch() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+		})
+	}
+}
+
+func TestNewHttpFetcher(t *testing.T) {
+	tests := []struct {
+		name    string
+		wantErr bool
+	}{
+		0: {name: "ValidURL", wantErr: false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			_, err := NewHttpFetcher()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("NewHttpFetcher() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 		})

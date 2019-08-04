@@ -41,7 +41,7 @@ func TestLocalProducer_produce(t *testing.T) {
 			producer := &LocalProducer{
 				messageQueue: tt.fields.messageQueue,
 			}
-			if err := producer.produce(tt.args.msg); (err != nil) != tt.wantErr {
+			if err := producer.Produce(tt.args.msg); (err != nil) != tt.wantErr {
 				t.Errorf("produce() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -50,7 +50,7 @@ func TestLocalProducer_produce(t *testing.T) {
 
 func TestNewLocalProducer(t *testing.T) {
 
-	exampleLocalProducer, _ := New(make(chan entity.Message, exampleChannelSize))
+	exampleLocalProducer, _ := NewLocalProducer(make(chan entity.Message, exampleChannelSize))
 
 	type args struct {
 		messageQueue chan entity.Message
@@ -73,7 +73,7 @@ func TestNewLocalProducer(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotProducer, err := New(tt.args.messageQueue)
+			gotProducer, err := NewLocalProducer(tt.args.messageQueue)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewMessage() error = %v, wantErr %v", err, tt.wantErr)
 				return

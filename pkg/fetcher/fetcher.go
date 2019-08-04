@@ -6,5 +6,5 @@ import (
 
 // Interface exposed for fetching URL
 type Fetcher interface {
-	fetch(seedUrl url.URL) ([]url.URL, error)
+	Fetch(seedUrl url.URL) (links []url.URL, err error)
 }

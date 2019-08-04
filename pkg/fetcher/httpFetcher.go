@@ -11,6 +11,11 @@ import (
 type HttpFetcher struct {
 }
 
+// Constructs a new HttpFetcher object
+func NewHttpFetcher() (httpFetcher *HttpFetcher, err error) {
+	return new(HttpFetcher), nil
+}
+
 // Fetches the seedUrl
 // Returns the slice of URLs present in the response body of seedUrl
 func (httpFetcher *HttpFetcher) Fetch(seedUrl url.URL) (links []url.URL, err error) {
