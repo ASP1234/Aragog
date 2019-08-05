@@ -13,6 +13,7 @@ const (
 )
 
 func TestNewSubDomainEvaluator(t *testing.T) {
+
 	tests := []struct {
 		name          string
 		wantEvaluator *SubDomainEvaluator
@@ -36,6 +37,7 @@ func TestSubDomainEvaluator_Evaluate(t *testing.T) {
 		seedUrl url.URL
 		links   []*url.URL
 	}
+
 	tests := []struct {
 		name               string
 		args               args

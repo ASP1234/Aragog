@@ -78,5 +78,5 @@ func getChildLink(token html.Token) (link *url.URL, err error) {
 		}
 	}
 
-	return
+	return link, err
 }

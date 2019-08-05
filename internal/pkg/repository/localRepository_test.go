@@ -2,6 +2,7 @@ package repository
 
 import (
 	"Aragog/internal/pkg/entity"
+	"Aragog/internal/pkg/entity/status"
 	"net/url"
 	"reflect"
 	"sync"
@@ -9,7 +10,10 @@ import (
 	"time"
 )
 
-const fetchedUrlString = "https://monzo.com/"
+const (
+	fetchedUrlString   = "https://monzo.com/"
+	validRetryAttempts = 0
+)
 
 func TestLocalRepository(t *testing.T) {
 
@@ -19,7 +23,9 @@ func TestLocalRepository(t *testing.T) {
 		name string
 		want *localRepository
 	}{
-		0: {"Singleton", repository}}
+		0: {"Singleton", repository},
+	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := LocalRepository(); !reflect.DeepEqual(got, tt.want) {
@@ -29,39 +35,40 @@ func TestLocalRepository(t *testing.T) {
 	}
 }
 
-func Test_localRepository_BatchScan(t *testing.T) {
+func Test_localRepository_Put(t *testing.T) {
 
 	webPage := sampleWebPage()
 	emptyRepo := make(map[string]*entity.WebPage)
 
 	repo := make(map[string]*entity.WebPage)
-	repo[webPage.GetUrl().String()] = webPage
+	repo[webPage.GetAddress().String()] = webPage
 
 	type fields struct {
 		repo map[string]*entity.WebPage
 		mu   sync.RWMutex
 	}
 	type args struct {
-		exclusiveStartKey string
+		webPage *entity.WebPage
 	}
-	tests := []struct {
-		name            string
-		fields          fields
-		args            args
-		wantScanResults []*entity.WebPage
-		wantErr         bool
-	}{
-		0: {name: "WebPagesPresent",
-			fields:          fields{repo: repo, mu: sync.RWMutex{}},
-			args:            *new(args),
-			wantScanResults: append(make([]*entity.WebPage, 0), webPage),
-			wantErr:         false},
 
-		1: {name: "NoWebPagesPresent",
-			fields:          fields{repo: emptyRepo, mu: sync.RWMutex{}},
-			args:            *new(args),
-			wantScanResults: make([]*entity.WebPage, 0),
-			wantErr:         false}}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantId  string
+		wantErr bool
+	}{
+		0: {name: "Create",
+			fields:  fields{repo: emptyRepo, mu: sync.RWMutex{}},
+			args:    args{webPage: webPage},
+			wantId:  fetchedUrlString,
+			wantErr: false},
+		1: {name: "Update",
+			fields:  fields{repo: repo, mu: sync.RWMutex{}},
+			args:    args{webPage: webPage},
+			wantId:  fetchedUrlString,
+			wantErr: false},
+	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -69,13 +76,13 @@ func Test_localRepository_BatchScan(t *testing.T) {
 				repo: tt.fields.repo,
 				mu:   tt.fields.mu,
 			}
-			gotScanResults, _, err := rep.BatchScan(tt.args.exclusiveStartKey)
+			gotId, err := rep.Put(tt.args.webPage)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("BatchScan() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Put() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(gotScanResults, tt.wantScanResults) {
-				t.Errorf("BatchScan() gotScanResults = %v, want %v", gotScanResults, tt.wantScanResults)
+			if gotId != tt.wantId {
+				t.Errorf("Put() gotId = %v, want %v", gotId, tt.wantId)
 			}
 		})
 	}
@@ -87,15 +94,17 @@ func Test_localRepository_Get(t *testing.T) {
 	emptyRepo := make(map[string]*entity.WebPage)
 
 	repo := make(map[string]*entity.WebPage)
-	repo[webPage.GetUrl().String()] = webPage
+	repo[webPage.GetAddress().String()] = webPage
 
 	type fields struct {
 		repo map[string]*entity.WebPage
 		mu   sync.RWMutex
 	}
+
 	type args struct {
 		id string
 	}
+
 	tests := []struct {
 		name        string
 		fields      fields
@@ -113,7 +122,8 @@ func Test_localRepository_Get(t *testing.T) {
 			fields:      fields{repo: emptyRepo, mu: sync.RWMutex{}},
 			args:        args{id: fetchedUrlString},
 			wantWebPage: nil,
-			wantErr:     true}}
+			wantErr:     true},
+	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -133,33 +143,42 @@ func Test_localRepository_Get(t *testing.T) {
 	}
 }
 
-func Test_localRepository_Put(t *testing.T) {
+func Test_localRepository_BatchScan(t *testing.T) {
 
 	webPage := sampleWebPage()
 	emptyRepo := make(map[string]*entity.WebPage)
 
 	repo := make(map[string]*entity.WebPage)
-	repo[webPage.GetUrl().String()] = webPage
+	repo[webPage.GetAddress().String()] = webPage
 
 	type fields struct {
 		repo map[string]*entity.WebPage
 		mu   sync.RWMutex
 	}
+
 	type args struct {
-		webPage *entity.WebPage
+		exclusiveStartKey string
 	}
+
 	tests := []struct {
-		name    string
-		fields  fields
-		args    args
-		wantId  string
-		wantErr bool
+		name            string
+		fields          fields
+		args            args
+		wantScanResults []*entity.WebPage
+		wantErr         bool
 	}{
-		0: {name: "Create",
-			fields:  fields{repo: emptyRepo, mu: sync.RWMutex{}},
-			args:    args{webPage: webPage},
-			wantId:  fetchedUrlString,
-			wantErr: false}}
+		0: {name: "WebPagesPresent",
+			fields:          fields{repo: repo, mu: sync.RWMutex{}},
+			args:            *new(args),
+			wantScanResults: append(make([]*entity.WebPage, 0), webPage),
+			wantErr:         false},
+
+		1: {name: "NoWebPagesPresent",
+			fields:          fields{repo: emptyRepo, mu: sync.RWMutex{}},
+			args:            *new(args),
+			wantScanResults: make([]*entity.WebPage, 0),
+			wantErr:         false},
+	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -167,13 +186,13 @@ func Test_localRepository_Put(t *testing.T) {
 				repo: tt.fields.repo,
 				mu:   tt.fields.mu,
 			}
-			gotId, err := rep.Put(tt.args.webPage)
+			gotScanResults, _, err := rep.BatchScan(tt.args.exclusiveStartKey)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("Put() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("BatchScan() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if gotId != tt.wantId {
-				t.Errorf("Put() gotId = %v, want %v", gotId, tt.wantId)
+			if !reflect.DeepEqual(gotScanResults, tt.wantScanResults) {
+				t.Errorf("BatchScan() gotScanResults = %v, want %v", gotScanResults, tt.wantScanResults)
 			}
 		})
 	}
@@ -197,7 +216,7 @@ func sampleLastFetchedDate() time.Time {
 
 func sampleWebPage() *entity.WebPage {
 
-	webPage, _ := entity.NewWebPage(fetchedURL(), nil, sampleLastFetchedDate())
+	webPage, _ := entity.NewWebPage(fetchedURL(), sampleLastFetchedDate(), nil, validRetryAttempts, status.ToBeFetched)
 
 	return webPage
 }

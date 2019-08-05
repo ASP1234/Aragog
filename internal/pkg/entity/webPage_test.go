@@ -1,20 +1,30 @@
 package entity
 
 import (
+	"Aragog/internal/pkg/entity/status"
 	"net/url"
 	"reflect"
 	"testing"
 	"time"
 )
 
-const fetchedUrlString = "https://monzo.com/"
+const (
+	fetchedUrlString     = "https://monzo.com/"
+	InvalidRetryAttempts = -1
+	InvalidStatus        = ""
+	ValidRetryAttempt    = 0
+)
 
 func TestNewWebPage(t *testing.T) {
+
 	type args struct {
-		address         *url.URL
-		links           []*url.URL
-		lastFetchedDate time.Time
+		address          *url.URL
+		lastModifiedDate time.Time
+		links            []*url.URL
+		retryAttempts    int
+		status           string
 	}
+
 	tests := []struct {
 		name        string
 		args        args
@@ -22,21 +32,30 @@ func TestNewWebPage(t *testing.T) {
 		wantErr     bool
 	}{
 		0: {name: "ValidArguments",
-			args:        args{address: fetchedURL(), links: nil, lastFetchedDate: sampleLastFetchedDate()},
+			args:        args{address: fetchedURL(), lastModifiedDate: sampleLastModifiedDate(), links: nil, retryAttempts: ValidRetryAttempt, status: status.Fetched},
 			wantWebPage: sampleWebPage(),
 			wantErr:     false},
 		1: {name: "InvalidAddress",
-			args:        args{address: nil, links: nil, lastFetchedDate: sampleLastFetchedDate()},
+			args:        args{address: nil, lastModifiedDate: sampleLastModifiedDate(), links: nil, retryAttempts: ValidRetryAttempt, status: status.ToBeFetched},
 			wantWebPage: nil,
 			wantErr:     true},
-		2: {name: "InvalidLastFetchedDate",
-			args:        args{address: fetchedURL(), links: nil, lastFetchedDate: time.Time{}},
+		2: {name: "InvalidLastModifiedDate",
+			args:        args{address: fetchedURL(), lastModifiedDate: time.Time{}, links: nil, retryAttempts: ValidRetryAttempt, status: status.Fetched},
 			wantWebPage: nil,
-			wantErr:     true}}
+			wantErr:     true},
+		3: {name: "InvalidRetryAttempts",
+			args:        args{address: fetchedURL(), lastModifiedDate: sampleLastModifiedDate(), links: nil, retryAttempts: InvalidRetryAttempts, status: status.Fetched},
+			wantWebPage: nil,
+			wantErr:     true},
+		4: {name: "InvalidStatus",
+			args:        args{address: fetchedURL(), lastModifiedDate: sampleLastModifiedDate(), links: nil, retryAttempts: ValidRetryAttempt, status: InvalidStatus},
+			wantWebPage: nil,
+			wantErr:     true},
+	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotWebPage, err := NewWebPage(tt.args.address, tt.args.links, tt.args.lastFetchedDate)
+			gotWebPage, err := NewWebPage(tt.args.address, tt.args.lastModifiedDate, tt.args.links, tt.args.retryAttempts, tt.args.status)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewWebPage() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -48,56 +67,106 @@ func TestNewWebPage(t *testing.T) {
 	}
 }
 
-func TestWebPage_GetLastFetchedDate(t *testing.T) {
+func TestWebPage_GetAddress(t *testing.T) {
+
 	type fields struct {
-		address         *url.URL
-		links           []*url.URL
-		lastFetchedDate time.Time
+		address          *url.URL
+		lastModifiedDate time.Time
+		links            []*url.URL
+		retryAttempts    int
+		status           string
 	}
+
+	tests := []struct {
+		name   string
+		fields fields
+		want   *url.URL
+	}{
+		0: {name: "ValidFields",
+			fields: fields{address: fetchedURL(), lastModifiedDate: sampleLastModifiedDate(), links: nil, retryAttempts: ValidRetryAttempt, status: status.Fetched},
+			want:   fetchedURL()},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			webPage := &WebPage{
+				address:          tt.fields.address,
+				lastModifiedDate: tt.fields.lastModifiedDate,
+				links:            tt.fields.links,
+				retryAttempts:    tt.fields.retryAttempts,
+				status:           tt.fields.status,
+			}
+			if got := webPage.GetAddress(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("GetAddress() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestWebPage_GetLastModifiedDate(t *testing.T) {
+
+	type fields struct {
+		address          *url.URL
+		lastModifiedDate time.Time
+		links            []*url.URL
+		retryAttempts    int
+		status           string
+	}
+
 	tests := []struct {
 		name   string
 		fields fields
 		want   time.Time
 	}{
 		0: {name: "ValidFields",
-			fields: fields{address: fetchedURL(), links: nil, lastFetchedDate: sampleLastFetchedDate()},
-			want:   sampleLastFetchedDate()},
+			fields: fields{address: fetchedURL(), lastModifiedDate: sampleLastModifiedDate(), links: nil, retryAttempts: ValidRetryAttempt, status: status.Fetched},
+			want:   sampleLastModifiedDate()},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			webPage := &WebPage{
-				address:         tt.fields.address,
-				links:           tt.fields.links,
-				lastFetchedDate: tt.fields.lastFetchedDate,
+				address:          tt.fields.address,
+				lastModifiedDate: tt.fields.lastModifiedDate,
+				links:            tt.fields.links,
+				retryAttempts:    tt.fields.retryAttempts,
+				status:           tt.fields.status,
 			}
-			if got := webPage.GetLastFetchedDate(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("GetLastFetchedDate() = %v, want %v", got, tt.want)
+			if got := webPage.GetLastModifiedDate(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("GetLastModifiedDate() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
 func TestWebPage_GetLinks(t *testing.T) {
+
 	type fields struct {
-		address         *url.URL
-		links           []*url.URL
-		lastFetchedDate time.Time
+		address          *url.URL
+		lastModifiedDate time.Time
+		links            []*url.URL
+		retryAttempts    int
+		status           string
 	}
+
 	tests := []struct {
 		name   string
 		fields fields
 		want   []*url.URL
 	}{
 		0: {name: "ValidFields",
-			fields: fields{address: fetchedURL(), links: nil, lastFetchedDate: sampleLastFetchedDate()},
+			fields: fields{address: fetchedURL(), lastModifiedDate: sampleLastModifiedDate(), links: nil, retryAttempts: ValidRetryAttempt, status: status.Fetched},
 			want:   nil},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			webPage := &WebPage{
-				address:         tt.fields.address,
-				links:           tt.fields.links,
-				lastFetchedDate: tt.fields.lastFetchedDate,
+				address:          tt.fields.address,
+				lastModifiedDate: tt.fields.lastModifiedDate,
+				links:            tt.fields.links,
+				retryAttempts:    tt.fields.retryAttempts,
+				status:           tt.fields.status,
 			}
 			if got := webPage.GetLinks(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetLinks() = %v, want %v", got, tt.want)
@@ -106,30 +175,73 @@ func TestWebPage_GetLinks(t *testing.T) {
 	}
 }
 
-func TestWebPage_GetUrl(t *testing.T) {
+func TestWebPage_GetRetryAttempts(t *testing.T) {
+
 	type fields struct {
-		address         *url.URL
-		links           []*url.URL
-		lastFetchedDate time.Time
+		address          *url.URL
+		lastModifiedDate time.Time
+		links            []*url.URL
+		retryAttempts    int
+		status           string
 	}
+
 	tests := []struct {
 		name   string
 		fields fields
-		want   *url.URL
+		want   int
 	}{
 		0: {name: "ValidFields",
-			fields: fields{address: fetchedURL(), links: nil, lastFetchedDate: sampleLastFetchedDate()},
-			want:   fetchedURL()},
+			fields: fields{address: fetchedURL(), lastModifiedDate: sampleLastModifiedDate(), links: nil, retryAttempts: ValidRetryAttempt, status: status.Fetched},
+			want:   0},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			webPage := &WebPage{
-				address:         tt.fields.address,
-				links:           tt.fields.links,
-				lastFetchedDate: tt.fields.lastFetchedDate,
+				address:          tt.fields.address,
+				lastModifiedDate: tt.fields.lastModifiedDate,
+				links:            tt.fields.links,
+				retryAttempts:    tt.fields.retryAttempts,
+				status:           tt.fields.status,
 			}
-			if got := webPage.GetUrl(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("GetUrl() = %v, want %v", got, tt.want)
+			if got := webPage.GetRetryAttempts(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("GetStatus() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestWebPage_GetStatus(t *testing.T) {
+
+	type fields struct {
+		address          *url.URL
+		lastModifiedDate time.Time
+		links            []*url.URL
+		retryAttempts    int
+		status           string
+	}
+
+	tests := []struct {
+		name   string
+		fields fields
+		want   string
+	}{
+		0: {name: "ValidFields",
+			fields: fields{address: fetchedURL(), lastModifiedDate: sampleLastModifiedDate(), links: nil, retryAttempts: ValidRetryAttempt, status: status.Fetched},
+			want:   status.Fetched},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			webPage := &WebPage{
+				address:          tt.fields.address,
+				lastModifiedDate: tt.fields.lastModifiedDate,
+				links:            tt.fields.links,
+				retryAttempts:    tt.fields.retryAttempts,
+				status:           tt.fields.status,
+			}
+			if got := webPage.GetStatus(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("GetStatus() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -143,7 +255,7 @@ func fetchedURL() (link *url.URL) {
 	return link
 }
 
-func sampleLastFetchedDate() time.Time {
+func sampleLastModifiedDate() time.Time {
 
 	sampleTime, _ := time.Parse(time.Now().Format(time.UnixDate), time.UnixDate)
 	sampleTime = sampleTime.AddDate(1, 1, 1)
@@ -153,7 +265,7 @@ func sampleLastFetchedDate() time.Time {
 
 func sampleWebPage() *WebPage {
 
-	webPage, _ := NewWebPage(fetchedURL(), nil, sampleLastFetchedDate())
+	webPage, _ := NewWebPage(fetchedURL(), sampleLastModifiedDate(), nil, ValidRetryAttempt, status.Fetched)
 
 	return webPage
 }

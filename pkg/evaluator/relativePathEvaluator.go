@@ -15,7 +15,8 @@ func NewRelativePathEvaluator() (evaluator *RelativePathEvaluator) {
 }
 
 // Evaluate relative urls and convert them to absolute urls with seedUrl as a base
-func (evaluator *RelativePathEvaluator) Evaluate(seedUrl url.URL, links []*url.URL) (evaluatedLinks []*url.URL, err error) {
+func (evaluator *RelativePathEvaluator) Evaluate(seedUrl url.URL, links []*url.URL) (
+	evaluatedLinks []*url.URL, err error) {
 
 	evaluatedLinks = make([]*url.URL, 0)
 

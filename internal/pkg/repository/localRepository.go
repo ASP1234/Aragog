@@ -13,12 +13,13 @@ type localRepository struct {
 }
 
 var (
-	rep  *localRepository
 	once sync.Once
+	rep  *localRepository
 )
 
 // Constructs/ Returns a new/ existing LocalRepository object
 func LocalRepository() *localRepository {
+
 	once.Do(func() {
 		rep = &localRepository{
 			repo: make(map[string]*entity.WebPage),
@@ -30,10 +31,11 @@ func LocalRepository() *localRepository {
 
 // Puts the webPage into the store
 func (rep *localRepository) Put(webPage *entity.WebPage) (id string, err error) {
+
 	rep.mu.Lock()
 	defer rep.mu.Unlock()
 
-	id = webPage.GetUrl().String()
+	id = webPage.GetAddress().String()
 	rep.repo[id] = webPage
 
 	return id, nil
@@ -41,6 +43,7 @@ func (rep *localRepository) Put(webPage *entity.WebPage) (id string, err error) 
 
 // Retrieves the webPage if present within the store
 func (rep *localRepository) Get(id string) (webPage *entity.WebPage, err error) {
+
 	rep.mu.RLock()
 	defer rep.mu.RUnlock()
 
@@ -54,7 +57,9 @@ func (rep *localRepository) Get(id string) (webPage *entity.WebPage, err error) 
 }
 
 // Retrieves all the webPages from the store
-func (rep *localRepository) BatchScan(exclusiveStartKey string) (scanResults []*entity.WebPage, lastEvaluatedKey string, err error) {
+func (rep *localRepository) BatchScan(exclusiveStartKey string) (
+	scanResults []*entity.WebPage, lastEvaluatedKey string, err error) {
+
 	rep.mu.RLock()
 	defer rep.mu.RUnlock()
 

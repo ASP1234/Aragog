@@ -2,6 +2,7 @@ package evaluator
 
 import (
 	"Aragog/internal/pkg/entity"
+	"Aragog/internal/pkg/entity/status"
 	"Aragog/internal/pkg/repository"
 	"net/url"
 	"reflect"
@@ -13,17 +14,19 @@ const (
 	currentSeedUrlString  = "https://monzo.com/"
 	notPersistedUrlString = "https://monzo.com/about/"
 	persistedUrlString    = "https://monzo.com/careers/"
+	sampleRetryAttempt    = 1
 )
 
 func TestNewPersistenceExpiryEvaluator(t *testing.T) {
 
 	var rep repository.Repository = repository.LocalRepository()
-	evaluator, _ := NewPersistenceExpiryEvaluator(&rep, time.Duration(1*time.Microsecond))
+	evaluator, _ := NewPersistenceExpiryEvaluator(time.Duration(1*time.Microsecond), rep)
 
 	type args struct {
-		rep           *repository.Repository
 		expiryTimeOut time.Duration
+		rep           repository.Repository
 	}
+
 	tests := []struct {
 		name          string
 		args          args
@@ -31,17 +34,18 @@ func TestNewPersistenceExpiryEvaluator(t *testing.T) {
 		wantErr       bool
 	}{
 		0: {name: "ValidArguments",
-			args:          args{rep: &rep, expiryTimeOut: time.Duration(1 * time.Microsecond)},
+			args:          args{expiryTimeOut: time.Microsecond, rep: rep},
 			wantEvaluator: evaluator,
 			wantErr:       false},
 		1: {name: "NilRepository",
-			args:          args{rep: nil, expiryTimeOut: time.Duration(1 * time.Microsecond)},
+			args:          args{expiryTimeOut: time.Microsecond, rep: nil},
 			wantEvaluator: nil,
-			wantErr:       true}}
+			wantErr:       true},
+	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotEvaluator, err := NewPersistenceExpiryEvaluator(tt.args.rep, tt.args.expiryTimeOut)
+			gotEvaluator, err := NewPersistenceExpiryEvaluator(tt.args.expiryTimeOut, tt.args.rep)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewPersistenceExpiryEvaluator() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -57,17 +61,19 @@ func TestPersistenceExpiryEvaluator_Evaluate(t *testing.T) {
 
 	var rep repository.Repository = repository.LocalRepository()
 	links := make([]*url.URL, 0)
-	webPage, _ := entity.NewWebPage(createURL(persistedUrlString), links, time.Now())
+	webPage, _ := entity.NewWebPage(createURL(persistedUrlString), time.Now(), links, sampleRetryAttempt, status.Fetched)
 	rep.Put(webPage)
 
 	type fields struct {
-		rep           *repository.Repository
+		rep           repository.Repository
 		expiryTimeOut time.Duration
 	}
+
 	type args struct {
 		seedUrl url.URL
 		links   []*url.URL
 	}
+
 	tests := []struct {
 		name               string
 		fields             fields
@@ -76,20 +82,21 @@ func TestPersistenceExpiryEvaluator_Evaluate(t *testing.T) {
 		wantErr            bool
 	}{
 		0: {name: "LinkNotPersisted",
-			fields:             fields{rep: &rep, expiryTimeOut: time.Duration(1 * time.Microsecond)},
+			fields:             fields{rep: rep, expiryTimeOut: time.Duration(1 * time.Microsecond)},
 			args:               args{seedUrl: *createURL(currentSeedUrlString), links: append(links, createURL(notPersistedUrlString))},
 			wantEvaluatedLinks: append(links, createURL(notPersistedUrlString)),
 			wantErr:            false},
 		1: {name: "PersistedLinkExpired",
-			fields:             fields{rep: &rep, expiryTimeOut: time.Duration(1 * time.Microsecond)},
+			fields:             fields{rep: rep, expiryTimeOut: time.Duration(1 * time.Microsecond)},
 			args:               args{seedUrl: *createURL(currentSeedUrlString), links: append(links, createURL(persistedUrlString))},
 			wantEvaluatedLinks: append(links, createURL(persistedUrlString)),
 			wantErr:            false},
 		2: {name: "PersistedLinkNotExpired",
-			fields:             fields{rep: &rep, expiryTimeOut: time.Duration(1 * time.Hour)},
+			fields:             fields{rep: rep, expiryTimeOut: time.Duration(1 * time.Hour)},
 			args:               args{seedUrl: *createURL(currentSeedUrlString), links: append(links, createURL(persistedUrlString))},
 			wantEvaluatedLinks: links,
-			wantErr:            false}}
+			wantErr:            false},
+	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

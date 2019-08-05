@@ -6,5 +6,5 @@ import (
 
 // Interface exposed for producing message
 type Producer interface {
-	Produce(msg message.Message)
+	Produce(msg message.Message) (err error)
 }

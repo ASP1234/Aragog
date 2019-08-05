@@ -13,11 +13,13 @@ const (
 )
 
 func TestNewRelativePathEvaluator(t *testing.T) {
+
 	tests := []struct {
 		name          string
 		wantEvaluator *RelativePathEvaluator
 	}{
-		0: {name: "Constructor", wantEvaluator: NewRelativePathEvaluator()}}
+		0: {name: "Constructor", wantEvaluator: NewRelativePathEvaluator()},
+	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -36,6 +38,7 @@ func TestRelativePathEvaluator_Evaluate(t *testing.T) {
 		seedUrl url.URL
 		links   []*url.URL
 	}
+
 	tests := []struct {
 		name               string
 		args               args
