@@ -1,0 +1,12 @@
+# OS configurations
+os:
+  MaxProcessors: 4
+
+# Processor configurations
+processor:
+  maxRetryAttempts: 3
+  maxRoutines: 4000
+
+# Producer configurations
+producer:
+  seedUrl: "https://monzo.com"
