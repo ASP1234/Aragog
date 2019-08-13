@@ -1,6 +1,7 @@
+// Package error provides various custom errors for enhancing the error handling depending upon the use case.
 package error
 
-// DependencyError representing errors related to dependency failure
+// DependencyError representing errors related to dependency failure.
 type DependencyError struct {
 	message string
 }

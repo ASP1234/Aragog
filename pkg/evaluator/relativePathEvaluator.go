@@ -5,16 +5,16 @@ import (
 	"net/url"
 )
 
-// RelativePathEvaluator to evaluate relative urls and convert them to absolute urls
+// RelativePathEvaluator to evaluate relative urls and convert them to absolute urls.
 type RelativePathEvaluator struct {
 }
 
-// Constructs a new RelativePathEvaluator object
+// Constructs a new RelativePathEvaluator object.
 func NewRelativePathEvaluator() (evaluator *RelativePathEvaluator) {
 	return new(RelativePathEvaluator)
 }
 
-// Evaluate relative urls and convert them to absolute urls with seedUrl as a base
+// Evaluate relative urls and convert them to absolute urls with seedUrl as a base.
 func (evaluator *RelativePathEvaluator) Evaluate(seedUrl url.URL, links []*url.URL) (
 	evaluatedLinks []*url.URL, err error) {
 

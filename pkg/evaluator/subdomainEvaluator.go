@@ -5,16 +5,16 @@ import (
 	"net/url"
 )
 
-// SubDomainEvaluator to evaluate urls based on domain
+// SubDomainEvaluator to evaluate urls based on domain.
 type SubDomainEvaluator struct {
 }
 
-// Constructs a new SubDomainEvaluator object
+// Constructs a new SubDomainEvaluator object.
 func NewSubDomainEvaluator() (evaluator *SubDomainEvaluator) {
 	return new(SubDomainEvaluator)
 }
 
-// Evaluate urls based on seedUrl domain
+// Evaluate urls based on seedUrl domain.
 func (evaluator *SubDomainEvaluator) Evaluate(seedUrl url.URL, links []*url.URL) (evaluatedLinks []*url.URL, err error) {
 
 	evaluatedLinks = make([]*url.URL, 0)

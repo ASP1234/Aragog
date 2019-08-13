@@ -7,17 +7,17 @@ import (
 	"net/url"
 )
 
-// HTTP protocol implementation of fetcher for fetching URL
+// HTTP protocol implementation of fetcher for fetching URL.
 type HttpFetcher struct {
 }
 
-// Constructs a new HttpFetcher object
+// Constructs a new HttpFetcher object.
 func NewHttpFetcher() (httpFetcher *HttpFetcher, err error) {
 	return new(HttpFetcher), nil
 }
 
-// Fetches the seedUrl
-// Returns the slice of URLs present in the response body of seedUrl
+// Fetches the seedUrl.
+// Returns the slice of URLs present in the response body of seedUrl.
 func (httpFetcher *HttpFetcher) Fetch(seedUrl url.URL) (links []*url.URL, err error) {
 
 	if seedUrl == (url.URL{}) {

@@ -114,4 +114,3 @@ func getEvaluators(cfg configs.Init, rep repository.Repository) (evaluators []ev
 
 	return evaluators
 }
-

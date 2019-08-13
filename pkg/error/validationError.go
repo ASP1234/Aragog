@@ -1,6 +1,7 @@
+// Package error provides various custom errors for enhancing the error handling depending upon the use case.
 package error
 
-// ValidationError representing errors related to validation checks
+// ValidationError representing errors related to validation checks.
 type ValidationError struct {
 	message string
 }

@@ -20,7 +20,6 @@ func main() {
 	processOutput(rep)
 }
 
-
 func crawl(messageQueue chan entity.Message, processor core.Processor) {
 
 	var waitGroup sync.WaitGroup

@@ -9,13 +9,13 @@ import (
 	"time"
 )
 
-// PersistenceExpiryEvaluator to evaluate expiry of links that are already fetched
+// PersistenceExpiryEvaluator to evaluate expiry of links that are already fetched.
 type PersistenceExpiryEvaluator struct {
 	expiryTimeOut time.Duration
 	rep           repository.Repository
 }
 
-// Constructs a new PersistenceExpiryEvaluator object with values being passed as arguments
+// Constructs a new PersistenceExpiryEvaluator object with values being passed as arguments.
 func NewPersistenceExpiryEvaluator(expiryTimeOut time.Duration, rep repository.Repository) (
 	evaluator *PersistenceExpiryEvaluator, err error) {
 
@@ -31,7 +31,7 @@ func NewPersistenceExpiryEvaluator(expiryTimeOut time.Duration, rep repository.R
 	return evaluator, err
 }
 
-// Evaluate urls based on persistence and configured expiry timeout
+// Evaluate urls based on persistence and configured expiry timeout.
 func (evaluator *PersistenceExpiryEvaluator) Evaluate(seedUrl url.URL, links []*url.URL) (
 	evaluatedLinks []*url.URL, err error) {
 
