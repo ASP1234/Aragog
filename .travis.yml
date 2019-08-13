@@ -1,0 +1,8 @@
+matrix:
+  include:
+    - language: go
+      go: master
+
+notifications:
+  email:
+    - n.singhal26@gmail.com
