@@ -1,6 +1,6 @@
-package config
+package configs
 
-// structure for decoding config.yml
+// structure for decoding configs.yml
 type Init struct {
 	OS struct {
 		MaxProcessors int `yaml:"maxProcessors"`

@@ -1,7 +1,7 @@
 package init
 
 import (
-	"Aragog/config"
+	"Aragog/configs"
 	"Aragog/internal/pkg/entity"
 	core "Aragog/internal/pkg/processor"
 	"Aragog/internal/pkg/producer"
@@ -37,9 +37,9 @@ func Setup(messageQueue chan entity.Message, rep repository.Repository) (process
 	return processor
 }
 
-func getEnvConfiguration() (cfg config.Init) {
+func getEnvConfiguration() (cfg configs.Init) {
 
-	cfgRelativeFilePath := "config/config.yml"
+	cfgRelativeFilePath := "configs/config.yml"
 	cfgFile, err := os.Open(cfgRelativeFilePath)
 
 	if err != nil {
@@ -98,7 +98,7 @@ func getFetcher() (f fetcher.Fetcher) {
 	return f
 }
 
-func getEvaluators(cfg config.Init, rep repository.Repository) (evaluators []evaluator.Evaluator) {
+func getEvaluators(cfg configs.Init, rep repository.Repository) (evaluators []evaluator.Evaluator) {
 
 	evaluators = make([]evaluator.Evaluator, 0)
 	evaluators = append(evaluators, evaluator.NewRelativePathEvaluator())
