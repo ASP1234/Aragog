@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"Aragog/internal/pkg/entity"
-	"Aragog/internal/pkg/entity/status"
+	"Aragog/pkg/entity"
+	"Aragog/pkg/entity/status"
 	"net/url"
 	"reflect"
 	"sync"

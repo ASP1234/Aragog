@@ -1,10 +1,10 @@
 package evaluator
 
 import (
-	"Aragog/internal/pkg/entity"
-	"Aragog/internal/pkg/entity/status"
-	"Aragog/internal/pkg/repository"
+	"Aragog/pkg/entity"
+	"Aragog/pkg/entity/status"
 	customError "Aragog/pkg/error"
+	"Aragog/pkg/repository"
 	"net/url"
 	"time"
 )

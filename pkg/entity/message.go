@@ -1,3 +1,4 @@
+// Package entity provides various entities to capture the business model.
 package entity
 
 import (
@@ -5,12 +6,12 @@ import (
 	"net/url"
 )
 
-// Message Entity for capturing data related to the address to be fetched
+// Message Entity for capturing data related to the address to be fetched.
 type Message struct {
 	link *url.URL
 }
 
-// Constructs a new Message object with values being passed as arguments
+// Constructs a new Message object with values being passed as arguments.
 func NewMessage(link *url.URL) (msg *Message, err error) {
 
 	if link == nil {
@@ -24,7 +25,7 @@ func NewMessage(link *url.URL) (msg *Message, err error) {
 	return msg, err
 }
 
-// Returns the value of link
+// Returns the value of link.
 func (msg *Message) GetLink() *url.URL {
 
 	return msg.link

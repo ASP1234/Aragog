@@ -1,9 +1,9 @@
 package evaluator
 
 import (
-	"Aragog/internal/pkg/entity"
-	"Aragog/internal/pkg/entity/status"
-	"Aragog/internal/pkg/repository"
+	"Aragog/pkg/entity"
+	"Aragog/pkg/entity/status"
+	"Aragog/pkg/repository"
 	"net/url"
 	"reflect"
 	"testing"

@@ -2,12 +2,12 @@ package init
 
 import (
 	"Aragog/configs"
-	"Aragog/internal/pkg/entity"
-	core "Aragog/internal/pkg/processor"
-	"Aragog/internal/pkg/producer"
-	"Aragog/internal/pkg/repository"
+	"Aragog/pkg/entity"
 	"Aragog/pkg/evaluator"
 	"Aragog/pkg/fetcher"
+	core "Aragog/pkg/processor"
+	"Aragog/pkg/producer"
+	"Aragog/pkg/repository"
 	"gopkg.in/yaml.v2"
 	"net/url"
 	"os"

@@ -1,7 +1,7 @@
 package entity
 
 import (
-	"Aragog/internal/pkg/entity/status"
+	"Aragog/pkg/entity/status"
 	"net/url"
 	"reflect"
 	"testing"

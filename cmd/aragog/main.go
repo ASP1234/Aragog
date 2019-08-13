@@ -2,9 +2,9 @@ package main
 
 import (
 	module "Aragog/init"
-	"Aragog/internal/pkg/entity"
-	core "Aragog/internal/pkg/processor"
-	"Aragog/internal/pkg/repository"
+	"Aragog/pkg/entity"
+	core "Aragog/pkg/processor"
+	"Aragog/pkg/repository"
 	"os"
 	"sync"
 )

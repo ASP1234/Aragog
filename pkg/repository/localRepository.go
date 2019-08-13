@@ -1,12 +1,12 @@
 package repository
 
 import (
-	"Aragog/internal/pkg/entity"
+	"Aragog/pkg/entity"
 	customError "Aragog/pkg/error"
 	"sync"
 )
 
-// Repository for in-memory CRUD ops related to WebPage entity
+// Repository for in-memory CRUD ops related to WebPage entity.
 type localRepository struct {
 	repo map[string]*entity.WebPage
 	mu   sync.RWMutex
@@ -17,7 +17,7 @@ var (
 	rep  *localRepository
 )
 
-// Constructs/ Returns a new/ existing LocalRepository object
+// Constructs/ Returns a new/ existing LocalRepository object.
 func LocalRepository() *localRepository {
 
 	once.Do(func() {
@@ -29,7 +29,7 @@ func LocalRepository() *localRepository {
 	return rep
 }
 
-// Puts the webPage into the store
+// Puts the webPage into the store.
 func (rep *localRepository) Put(webPage *entity.WebPage) (id string, err error) {
 
 	rep.mu.Lock()
@@ -41,7 +41,7 @@ func (rep *localRepository) Put(webPage *entity.WebPage) (id string, err error) 
 	return id, nil
 }
 
-// Retrieves the webPage if present within the store
+// Retrieves the webPage if present within the store.
 func (rep *localRepository) Get(id string) (webPage *entity.WebPage, err error) {
 
 	rep.mu.RLock()
@@ -56,7 +56,7 @@ func (rep *localRepository) Get(id string) (webPage *entity.WebPage, err error) 
 	return webPage, nil
 }
 
-// Retrieves all the webPages from the store
+// Retrieves all the webPages from the store.
 func (rep *localRepository) BatchScan(exclusiveStartKey string) (
 	scanResults []*entity.WebPage, lastEvaluatedKey string, err error) {
 

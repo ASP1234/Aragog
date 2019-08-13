@@ -1,14 +1,14 @@
 package processor
 
 import (
-	"Aragog/internal/pkg/entity"
-	"Aragog/internal/pkg/entity/status"
-	"Aragog/internal/pkg/producer"
-	"Aragog/internal/pkg/repository"
-	"Aragog/internal/pkg/tools"
+	"Aragog/pkg/entity"
+	"Aragog/pkg/entity/status"
 	customError "Aragog/pkg/error"
 	"Aragog/pkg/evaluator"
 	"Aragog/pkg/fetcher"
+	"Aragog/pkg/producer"
+	"Aragog/pkg/repository"
+	"Aragog/pkg/tools"
 	"go.uber.org/zap"
 	"net/url"
 	"runtime"
@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-// LocalProcessor for processing messages
+// LocalProcessor for processing messages.
 type LocalProcessor struct {
 	logger           *zap.SugaredLogger
 	maxGoRoutines    int
@@ -28,7 +28,7 @@ type LocalProcessor struct {
 	producer         producer.Producer
 }
 
-// Constructs a new LocalProcessor object with values being passed as arguments
+// Constructs a new LocalProcessor object with values being passed as arguments.
 func NewLocalProcessor(maxGoRoutines int, maxRetryAttempts int, messageQueue chan entity.Message,
 	fetcher fetcher.Fetcher, rep repository.Repository, evaluators []evaluator.Evaluator, producer producer.Producer) (
 	localProcessor *LocalProcessor, err error) {
@@ -76,7 +76,7 @@ func NewLocalProcessor(maxGoRoutines int, maxRetryAttempts int, messageQueue cha
 	return localProcessor, err
 }
 
-// Process the frontier message (if any) in the messageQueue
+// Process the frontier message (if any) in the messageQueue.
 func (processor *LocalProcessor) Process(waitGroup *sync.WaitGroup) {
 
 	select {

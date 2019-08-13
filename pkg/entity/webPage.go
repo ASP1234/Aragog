@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// WebPage Entity for capturing data related to the fetched web page
+// WebPage Entity for capturing data related to the fetched web page.
 type WebPage struct {
 	address          *url.URL
 	lastModifiedDate time.Time
@@ -15,7 +15,7 @@ type WebPage struct {
 	status           string
 }
 
-// Constructs a new WebPage object with values being passed as arguments
+// Constructs a new WebPage object with values being passed as arguments.
 func NewWebPage(address *url.URL, lastModifiedDate time.Time,
 	links []*url.URL, retryAttempts int, status string) (webPage *WebPage, err error) {
 
@@ -49,27 +49,27 @@ func NewWebPage(address *url.URL, lastModifiedDate time.Time,
 	return webPage, nil
 }
 
-// Returns the value of address
+// Returns the value of address.
 func (webPage *WebPage) GetAddress() *url.URL {
 	return webPage.address
 }
 
-// Returns the value of lastModifiedDate
+// Returns the value of lastModifiedDate.
 func (webPage *WebPage) GetLastModifiedDate() time.Time {
 	return webPage.lastModifiedDate
 }
 
-// Returns the value of links
+// Returns the value of links.
 func (webPage *WebPage) GetLinks() []*url.URL {
 	return webPage.links
 }
 
-// Returns the count of retry attempts
+// Returns the count of retry attempts.
 func (webPage *WebPage) GetRetryAttempts() int {
 	return webPage.retryAttempts
 }
 
-// Returns the value of status
+// Returns the value of status.
 func (webPage *WebPage) GetStatus() string {
 	return webPage.status
 }
