@@ -1,14 +1,14 @@
 package processor
 
 import (
-	"Aragog/pkg/entity"
-	"Aragog/pkg/entity/status"
-	customError "Aragog/pkg/error"
-	"Aragog/pkg/evaluator"
-	"Aragog/pkg/fetcher"
-	"Aragog/pkg/producer"
-	"Aragog/pkg/repository"
-	"Aragog/pkg/tools"
+	"github.com/ASP1234/Aragog/pkg/entity"
+	"github.com/ASP1234/Aragog/pkg/entity/status"
+	customError "github.com/ASP1234/Aragog/pkg/error"
+	"github.com/ASP1234/Aragog/pkg/evaluator"
+	"github.com/ASP1234/Aragog/pkg/fetcher"
+	"github.com/ASP1234/Aragog/pkg/producer"
+	"github.com/ASP1234/Aragog/pkg/repository"
+	"github.com/ASP1234/Aragog/pkg/tools"
 	"go.uber.org/zap"
 	"net/url"
 	"runtime"

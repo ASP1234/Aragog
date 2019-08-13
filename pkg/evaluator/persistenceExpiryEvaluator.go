@@ -1,10 +1,10 @@
 package evaluator
 
 import (
-	"Aragog/pkg/entity"
-	"Aragog/pkg/entity/status"
-	customError "Aragog/pkg/error"
-	"Aragog/pkg/repository"
+	"github.com/ASP1234/Aragog/pkg/entity"
+	"github.com/ASP1234/Aragog/pkg/entity/status"
+	customError "github.com/ASP1234/Aragog/pkg/error"
+	"github.com/ASP1234/Aragog/pkg/repository"
 	"net/url"
 	"time"
 )

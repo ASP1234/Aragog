@@ -1,10 +1,10 @@
 package main
 
 import (
-	module "Aragog/init"
-	"Aragog/pkg/entity"
-	core "Aragog/pkg/processor"
-	"Aragog/pkg/repository"
+	module "github.com/ASP1234/Aragog/init"
+	"github.com/ASP1234/Aragog/pkg/entity"
+	core "github.com/ASP1234/Aragog/pkg/processor"
+	"github.com/ASP1234/Aragog/pkg/repository"
 	"os"
 	"sync"
 )

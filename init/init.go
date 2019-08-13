@@ -1,13 +1,13 @@
 package init
 
 import (
-	"Aragog/configs"
-	"Aragog/pkg/entity"
-	"Aragog/pkg/evaluator"
-	"Aragog/pkg/fetcher"
-	core "Aragog/pkg/processor"
-	"Aragog/pkg/producer"
-	"Aragog/pkg/repository"
+	"github.com/ASP1234/Aragog/configs"
+	"github.com/ASP1234/Aragog/pkg/entity"
+	"github.com/ASP1234/Aragog/pkg/evaluator"
+	"github.com/ASP1234/Aragog/pkg/fetcher"
+	core "github.com/ASP1234/Aragog/pkg/processor"
+	"github.com/ASP1234/Aragog/pkg/producer"
+	"github.com/ASP1234/Aragog/pkg/repository"
 	"gopkg.in/yaml.v2"
 	"net/url"
 	"os"

@@ -1,9 +1,9 @@
 package evaluator
 
 import (
-	"Aragog/pkg/entity"
-	"Aragog/pkg/entity/status"
-	"Aragog/pkg/repository"
+	"github.com/ASP1234/Aragog/pkg/entity"
+	"github.com/ASP1234/Aragog/pkg/entity/status"
+	"github.com/ASP1234/Aragog/pkg/repository"
 	"net/url"
 	"reflect"
 	"testing"

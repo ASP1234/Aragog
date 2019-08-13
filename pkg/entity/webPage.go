@@ -1,7 +1,7 @@
 package entity
 
 import (
-	customError "Aragog/pkg/error"
+	customError "github.com/ASP1234/Aragog/pkg/error"
 	"net/url"
 	"time"
 )

@@ -1,8 +1,8 @@
 package producer
 
 import (
-	message "Aragog/pkg/entity"
-	customError "Aragog/pkg/error"
+	message "github.com/ASP1234/Aragog/pkg/entity"
+	customError "github.com/ASP1234/Aragog/pkg/error"
 )
 
 // Producer for publishing messages via channels.

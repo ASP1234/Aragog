@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"Aragog/pkg/entity"
-	customError "Aragog/pkg/error"
+	"github.com/ASP1234/Aragog/pkg/entity"
+	customError "github.com/ASP1234/Aragog/pkg/error"
 	"sync"
 )
 

@@ -1,7 +1,7 @@
 package entity
 
 import (
-	"Aragog/pkg/entity/status"
+	"github.com/ASP1234/Aragog/pkg/entity/status"
 	"net/url"
 	"reflect"
 	"testing"

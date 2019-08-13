@@ -1,7 +1,7 @@
 package fetcher
 
 import (
-	customError "Aragog/pkg/error"
+	customError "github.com/ASP1234/Aragog/pkg/error"
 	"golang.org/x/net/html"
 	"net/http"
 	"net/url"

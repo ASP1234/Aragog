@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"Aragog/pkg/entity"
-	"Aragog/pkg/entity/status"
+	"github.com/ASP1234/Aragog/pkg/entity"
+	"github.com/ASP1234/Aragog/pkg/entity/status"
 	"net/url"
 	"reflect"
 	"sync"

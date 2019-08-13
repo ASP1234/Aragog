@@ -1,7 +1,7 @@
 // Package repository provides various storage which can be used as an underlying repository.
 package repository
 
-import "Aragog/pkg/entity"
+import "github.com/ASP1234/Aragog/pkg/entity"
 
 // Interface exposed for CRUD ops related to WebPage entity.
 type Repository interface {

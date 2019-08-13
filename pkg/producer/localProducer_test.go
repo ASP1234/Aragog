@@ -1,7 +1,7 @@
 package producer
 
 import (
-	"Aragog/pkg/entity"
+	"github.com/ASP1234/Aragog/pkg/entity"
 	"net/url"
 	"reflect"
 	"testing"

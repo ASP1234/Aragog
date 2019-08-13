@@ -2,7 +2,7 @@
 package producer
 
 import (
-	message "Aragog/pkg/entity"
+	message "github.com/ASP1234/Aragog/pkg/entity"
 )
 
 // Interface exposed for producing message.
