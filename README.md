@@ -48,6 +48,6 @@ Aragog is an Internet spider bot that systematically browses the World Wide Web,
  ## What's next?
  *"They believed that I was the monster that dwells in what they call the Chamber of Secrets."* - Aragog
  
- Aragog and his family are obedient to his master but they are getting complaints of privacy invasion. So, they are looking to improve their skills by understanding the *robots.txt* file and use it as a guiding principle in their invasions.
+ Aragog and his family are obedient to his master but they are getting complaints of privacy invasion. So, they are looking to improve their skills by understanding the *[robots.txt](https://en.wikipedia.org/wiki/Robots_exclusion_standard)* file and use it as a guiding principle in their invasions.
  
  Aragog wishes survival of his family and so he is willing to shift to *cloud* and distribute senior members among their *multiple homes*.
